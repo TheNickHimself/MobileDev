@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_layout"
+    style="@style/Widget.MobileDev.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.MobileDev.AppWidgetContainer">
+
+    <TextView
+        android:id="@+id/txtLocation"
+        android:layout_width="267dp"
+        android:layout_height="48dp"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_above="@id/txtTemperature"
+        android:layout_alignStart="@id/txtTemperature"
+        android:layout_alignParentBottom="false"
+        android:layout_marginBottom="25dp"
+        android:text="City"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txtTemperature"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:text="Temp"
+        android:textSize="60sp" />
+
+    <TextView
+        android:id="@+id/txtWeatherStatus"
+        android:layout_width="219dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTemperature"
+        android:layout_alignStart="@id/txtTemperature"
+        android:layout_marginTop="25dp"
+        android:text="condition"
+        android:textSize="20sp" />
+
+</RelativeLayout>

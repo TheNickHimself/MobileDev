@@ -34,10 +34,10 @@ class WidgetConfigurationActivity : Activity() {
         prefs.putString("WeatherApp", city)
         prefs.apply()
 
-        val resultValue = Intent().apply {
-            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
+        val intent = Intent(this, WeatherWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         }
-        setResult(RESULT_OK, resultValue)
+        sendBroadcast(intent)
         finish()
     }
 }

@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.widget.RemoteViews
 import android.content.Context.MODE_PRIVATE
@@ -18,6 +19,14 @@ import android.widget.Button
 
 class WeatherWidgetProvider : AppWidgetProvider() {
 
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+        if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(context, WeatherWidgetProvider::class.java))
+            onUpdate(context, appWidgetManager, appWidgetIds)
+        }
+    }
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,

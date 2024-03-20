@@ -40,13 +40,16 @@ class WeatherWidgetProvider : AppWidgetProvider() {
     }
 
 
+
     companion object {
         internal fun updateAppWidget(
             context: Context,
             appWidgetManager: AppWidgetManager,
-            appWidgetId: Int
+            appWidgetId: Int,
+            showWarning: Boolean = false
         ) {
             Log.d("updateAppWidget", "triggered")
+            //val views = RemoteViews(context.packageName, R.layout.widget_layout)
             val prefs = context.getSharedPreferences("weather_widget_prefs", MODE_PRIVATE)
             val selectedCity = prefs.getString("WeatherApp", "") ?: ""
 
@@ -68,6 +71,12 @@ class WeatherWidgetProvider : AppWidgetProvider() {
                     }
 
                     Log.d("weatherResponse", "finished and sent to views")
+                    if (showWarning) {
+                        views.setViewVisibility(R.id.txtWarning, View.VISIBLE)
+                    } else {
+                        views.setViewVisibility(R.id.txtWarning, View.GONE)
+                    }
+
                     appWidgetManager.updateAppWidget(appWidgetId, views)
                 }
 

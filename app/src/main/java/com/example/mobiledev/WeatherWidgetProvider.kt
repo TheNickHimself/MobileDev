@@ -71,12 +71,12 @@ class WeatherWidgetProvider : AppWidgetProvider() {
                     }
 
                     Log.d("weatherResponse", "finished and sent to views")
-                    if (showWarning) {
-                        views.setViewVisibility(R.id.txtWarning, View.VISIBLE)
+                    val bgColor = if (showWarning) {
+                        android.R.color.holo_red_light // Change this to the desired color resource
                     } else {
-                        views.setViewVisibility(R.id.txtWarning, View.GONE)
+                        android.R.color.transparent // Change this to the default background color
                     }
-
+                    views.setInt(R.id.widget_layout, "setBackgroundResource", bgColor)
                     appWidgetManager.updateAppWidget(appWidgetId, views)
                 }
 

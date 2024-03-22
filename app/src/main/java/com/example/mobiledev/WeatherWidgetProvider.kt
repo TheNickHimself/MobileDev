@@ -47,7 +47,7 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             showWarning: Boolean = false,
 
             weatherName: String?,
-            weatherTemp: Int,
+            weatherTemp: Int?,
             weatherCondition: String?
         ) {
             Log.d("updateAppWidget", "triggered")
@@ -55,7 +55,7 @@ class WeatherWidgetProvider : AppWidgetProvider() {
                     val views = RemoteViews(context.packageName, R.layout.widget_layout)
 
                         views.setTextViewText(R.id.txtLocation, weatherName)
-                        views.setTextViewText(R.id.txtTemperature, "${weatherTemp} °C")
+                        views.setTextViewText(R.id.txtTemperature, "$weatherTemp °C")
                         views.setTextViewText(R.id.txtWeatherStatus, weatherCondition)
 
 

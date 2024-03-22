@@ -32,12 +32,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="42e1be87-d971-405d-ade7-7c412dfa78f8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WeatherApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WeatherApiService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WeatherResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WeatherResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/FirebaseMessagingService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/FirebaseMessagingService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WeatherWidgetProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WeatherWidgetProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WidgetConfigurationActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/example/mobiledev/WidgetConfigurationActivity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

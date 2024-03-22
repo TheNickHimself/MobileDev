@@ -9,21 +9,14 @@ import android.content.Context
 import android.widget.RemoteViews
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-<<<<<<< Updated upstream
+import android.util.Log
 import android.view.View
-=======
-import android.content.IntentFilter
-import android.os.BatteryManager
->>>>>>> Stashed changes
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.util.Log
-<<<<<<< Updated upstream
 import android.widget.Button
-=======
-import androidx.appcompat.app.AppCompatActivity
->>>>>>> Stashed changes
+
 
 
 class WeatherWidgetProvider : AppWidgetProvider() {
@@ -44,22 +37,12 @@ class WeatherWidgetProvider : AppWidgetProvider() {
 
         Log.d("onUpdate", "triggered") // Debug level log
         for (appWidgetId in appWidgetIds) {
-<<<<<<< Updated upstream
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
 
-=======
-            val intent = Intent(context, WidgetConfigurationActivity::class.java)
-            val weatherName = intent.getStringExtra("weatherName")
-            val weatherTemp = intent.getIntExtra("weatherTemp", -300) // Default value if not found
-            val weatherCondition = intent.getStringExtra("weatherCondition")
 
-            updateAppWidget(context, appWidgetManager, appWidgetId, false, weatherName, weatherTemp, weatherCondition)
-        }
-    }
->>>>>>> Stashed changes
 
     companion object {
 

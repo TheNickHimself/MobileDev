@@ -1,6 +1,5 @@
 package com.example.mobiledev
 
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.appwidget.AppWidgetManager
@@ -10,11 +9,18 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
-class WidgetConfigurationActivity : Activity() {
-
+class WidgetConfigurationActivity : AppCompatActivity() {
+    private val apiService = RetrofitInstance.retrofit.create(WeatherApiService::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,20 +28,21 @@ class WidgetConfigurationActivity : Activity() {
 
         setContentView(R.layout.activity_widget_configuration)
 
+
         val btnValletta = findViewById<Button>(R.id.btnValletta)
         btnValletta.setOnClickListener {
-            saveSelectedCity("valletta")
+            fetchDataAndUpdateWidget("valletta")
 
         }
 
         val btnParis = findViewById<Button>(R.id.btnParis)
         btnParis.setOnClickListener {
-            saveSelectedCity("paris")
+            fetchDataAndUpdateWidget("paris")
         }
 
         val btnRome = findViewById<Button>(R.id.btnRome)
         btnRome.setOnClickListener {
-            saveSelectedCity("rome")
+            fetchDataAndUpdateWidget("rome")
         }
 
         val token = FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -50,6 +57,28 @@ class WidgetConfigurationActivity : Activity() {
             Log.d("gooooooooooooooooood", token)
         })
     }
+    private fun fetchDataAndUpdateWidget(cityName: String) {
+        val BASE_URL = "https://api.jamesdecelis.com/"
+
+        val Retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        //val apiService: WeatherApiService = Retrofit.create(WeatherApiService::class.java)
+        lifecycleScope.launch(Dispatchers.IO,) {
+                val reply = apiService.getWeather(cityName)
+                if (reply.isSuccessful) {
+                    val weatherResponse = reply.body()
+                    if (weatherResponse != null) {
+                        saveSelectedCity(weatherResponse)
+                    } else {
+                        Log.e("WidgetConfiguration", "Weather response body is null")
+                    }
+                }
+        }
+
+    }
 
 
     private fun createNotificationChannel() {
@@ -62,15 +91,16 @@ class WidgetConfigurationActivity : Activity() {
         }
     }
 
-    private fun saveSelectedCity(city: String) {
-        val prefs = getSharedPreferences("weather_widget_prefs", MODE_PRIVATE).edit()
-        prefs.putString("WeatherApp", city)
-        prefs.apply()
-
-        val intent = Intent(this, WeatherWidgetProvider::class.java).apply {
+    private fun saveSelectedCity(weatherResponse: WeatherResponse) {
+        val intent = Intent(this@WidgetConfigurationActivity, WeatherWidgetProvider::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra("weatherName", weatherResponse.name)
+            putExtra("weatherTemp", weatherResponse.temp)
+            putExtra("weatherCondition", weatherResponse.condition)
         }
         sendBroadcast(intent)
         finish()
     }
+
+
 }

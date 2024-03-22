@@ -9,6 +9,7 @@ import android.content.Intent
 import retrofit2.Call
 import android.util.Log
 
+//https://github.com/TheNickHimself/MobileDev
 
 class WeatherWidgetProvider : AppWidgetProvider() {
 
@@ -34,7 +35,13 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             val weatherTemp = intent.getIntExtra("weatherTemp", -300) // Default value if not found
             val weatherCondition = intent.getStringExtra("weatherCondition")
 
-            updateAppWidget(context, appWidgetManager, appWidgetId, false, weatherName, weatherTemp, weatherCondition)        }
+
+
+            updateAppWidget(context, appWidgetManager, appWidgetId, false, weatherName, weatherTemp, weatherCondition)
+        }
+    }
+    fun checkBatteryLevel(){
+
     }
 
 
@@ -46,30 +53,31 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             appWidgetId: Int,
             showWarning: Boolean = false,
 
-            weatherName: String?,
-            weatherTemp: Int?,
-            weatherCondition: String?
+            weatherName: String? = null,
+            weatherTemp: Int? = null,
+            weatherCondition: String? = null
         ) {
             Log.d("updateAppWidget", "triggered")
-
-                    val views = RemoteViews(context.packageName, R.layout.widget_layout)
-
-                        views.setTextViewText(R.id.txtLocation, weatherName)
-                        views.setTextViewText(R.id.txtTemperature, "$weatherTemp °C")
-                        views.setTextViewText(R.id.txtWeatherStatus, weatherCondition)
-
-
-                    Log.d("weatherResponse", "finished and sent to views")
-                    val bgColor = if (showWarning) {
-                        android.R.color.holo_red_light // Change this to the desired color resource
-                    } else {
-                        android.R.color.transparent // Change this to the default background color
-                    }
-                    views.setInt(R.id.widget_layout, "setBackgroundResource", bgColor)
-                    appWidgetManager.updateAppWidget(appWidgetId, views)
-                }
+            val views = RemoteViews(context.packageName, R.layout.widget_layout)
+            if (weatherName != null && weatherTemp != null && weatherCondition != null){
+                views.setTextViewText(R.id.txtLocation, weatherName)
+                views.setTextViewText(R.id.txtTemperature, "$weatherTemp °C")
+                views.setTextViewText(R.id.txtWeatherStatus, weatherCondition)
             }
+            else{
+                Log.d("updateAppWidget", "Weather data is null")
+            }
+
+            val bgColor = if (showWarning) {
+                android.R.color.holo_red_light // Change this to the desired color resource
+            } else {
+                android.R.color.transparent // Change this to the default background color
+            }
+            views.setInt(R.id.widget_layout, "setBackgroundResource", bgColor)
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
+    }
+}
 
 
 

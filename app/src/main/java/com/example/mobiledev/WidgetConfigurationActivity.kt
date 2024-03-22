@@ -3,6 +3,7 @@ package com.example.mobiledev
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -20,7 +21,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class WidgetConfigurationActivity : AppCompatActivity() {
-    private val apiService = RetrofitInstance.retrofit.create(WeatherApiService::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,23 +47,26 @@ class WidgetConfigurationActivity : AppCompatActivity() {
 
         val token = FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w("BBBBBAAAAAAAAAAADDDDDDDDDDDDDDD", "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
             // Get new FCM registration token
             val token = task.result
 
             // Log and toast
-            Log.d("gooooooooooooooooood", token)
+            Log.d("Token", token)
         })
     }
-    private fun fetchDataAndUpdateWidget(cityName: String) {
+    internal fun fetchDataAndUpdateWidget(cityName: String) {
+
         val BASE_URL = "https://api.jamesdecelis.com/"
 
-        val Retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        val apiService = retrofit.create(WeatherApiService::class.java)
+
 
         //val apiService: WeatherApiService = Retrofit.create(WeatherApiService::class.java)
         lifecycleScope.launch(Dispatchers.IO,) {
@@ -92,13 +95,11 @@ class WidgetConfigurationActivity : AppCompatActivity() {
     }
 
     private fun saveSelectedCity(weatherResponse: WeatherResponse) {
-        val intent = Intent(this@WidgetConfigurationActivity, WeatherWidgetProvider::class.java).apply {
-            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            putExtra("weatherName", weatherResponse.name)
-            putExtra("weatherTemp", weatherResponse.temp)
-            putExtra("weatherCondition", weatherResponse.condition)
+        val appWidgetManager = AppWidgetManager.getInstance(this)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(ComponentName(this, WeatherWidgetProvider::class.java))
+        for (appWidgetId in appWidgetIds) {
+            WeatherWidgetProvider.updateAppWidget(this, appWidgetManager, appWidgetId, false, weatherResponse.name, weatherResponse.temp, weatherResponse.condition)
         }
-        sendBroadcast(intent)
         finish()
     }
 
